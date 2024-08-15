@@ -8,6 +8,8 @@ type TreeNode struct {
 	Right *TreeNode
 }
 
+var prev *TreeNode
+
 func validate(root *TreeNode, low *int, high *int) bool {
 	//Empty Tree is a Valid tree
 	if root == nil {
@@ -26,6 +28,29 @@ func validate(root *TreeNode, low *int, high *int) bool {
 func isValidBST(root *TreeNode) bool {
 	res := validate(root, nil, nil)
 	return res
+}
+
+func inorder(root *TreeNode) bool {
+
+	if root == nil {
+		return true
+	}
+
+	if !inorder(root.Left) {
+		return false
+	}
+
+	if prev != nil && root.Val <= prev.Val {
+		return false
+	}
+	prev = root
+
+	return inorder(root.Right)
+}
+
+func isValidBSTinorder(root *TreeNode) bool {
+	prev = nil
+	return inorder(root)
 }
 
 func main() {
